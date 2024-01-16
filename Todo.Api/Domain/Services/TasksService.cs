@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Todo.Api.Domain.DTOs;
 using Todo.Api.Domain.Interfaces.IRepositories;
 
@@ -16,17 +13,17 @@ namespace Todo.Api.Domain.Services
             _TasksRepository = taskRepository;
         }
 
-        public List<TodoTaskDTO> GetTodoTasks()
+        public async Task<List<TodoTaskDTO>>  GetTodoTasks()
         {
             return _TasksRepository.GetTodoTasks();
         }
 
-        public TodoTaskDTO? GetTodoTaskById(int todoTaskId)
+        public async Task<TodoTaskDTO?>  GetTodoTaskById(int todoTaskId)
         {
             return _TasksRepository.GetTodoTaskById(todoTaskId);
         }
 
-        public void CreateTodoTask(TodoTaskDTO todoTask)
+        public async Task  CreateTodoTask(TodoTaskDTO todoTask)
         {
             todoTask.CreatedAt = DateTime.Now;
             todoTask.UpdatedAt = DateTime.Now;
@@ -45,7 +42,7 @@ namespace Todo.Api.Domain.Services
             return false;
         }
 
-        public void DeleteTodoTask(int todoTaskId)
+        public async Task DeleteTodoTask(int todoTaskId)
         {
             _TasksRepository.DeleteTodoTask(todoTaskId);
         }
