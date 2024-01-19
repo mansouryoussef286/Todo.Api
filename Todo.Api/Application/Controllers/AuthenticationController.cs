@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Todo.Api.Domain.Models;
 using Todo.Api.Domain.Services;
 
 namespace Todo.Api.Application.Controllers
@@ -13,10 +14,11 @@ namespace Todo.Api.Application.Controllers
             _authenticationService = authenticationService;
         }
 
+
         [HttpGet("{code}")]
-        public string ValidateCodeAndGetAccessToken(string code)
+        public async Task<AuthenticationResModel> ValidateCodeAndGetAccessToken(string code)
         {
-            return "value";
+           return await _authenticationService.Authenticate(code);
         }
     }
 }

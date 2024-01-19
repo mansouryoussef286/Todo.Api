@@ -6,14 +6,28 @@ using Todo.Api.Infrastructure.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add appsettings
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Configuration.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder
+            .WithOrigins("http://localhost:4200", "")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+builder.Services.AddHttpClient();
 
 // Add DbContext
-builder.Services.AddDbContext<TodoDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("TodoDbConnection")));
+builder.Services.AddDbContext<TodoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("TodoDbConnection")));
 
 // Add Dependency injection tokens
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
@@ -38,5 +52,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();
