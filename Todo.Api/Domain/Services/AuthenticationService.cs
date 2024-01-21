@@ -19,7 +19,7 @@ namespace Todo.Api.Domain.Services
             // Replace the URL with the actual API endpoint
             var apiUrl = (_configuration["Auth-Server:ApiUrl"] ?? "") + "authenticate";
             var authServerApiId = _configuration["Auth-Server:ApiId"] ?? "";
-            var authServerApiSecret = _configuration["Auth-Server:ApiISecret"] ?? "";
+            var authServerApiSecret = _configuration["Auth-Server:ApiSecret"] ?? "";
 
             var reqModel = new AuthenticationReqModel()
             {

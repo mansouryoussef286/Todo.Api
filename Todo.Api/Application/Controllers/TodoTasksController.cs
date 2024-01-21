@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Api.Domain.DTOs;
 using Todo.Api.Domain.Services;
@@ -7,6 +8,7 @@ using Todo.Api.Infrastructure.Data.Models;
 namespace Todo.Api.Application.Controllers
 {
     [Route("api/todotasks")]
+    [JWTAuthenticationFilter]
     [ApiController]
     public class TodoTasksController : ControllerBase
     {
@@ -19,6 +21,13 @@ namespace Todo.Api.Application.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoTaskDTO>>> GetTodoTasks()
         {
+            return await _tasksService.GetTodoTasks();
+        }
+
+        [HttpGet("list")]
+        public async Task<ActionResult<IEnumerable<TodoTaskDTO>>> GetTodoTasksByUser()
+        {
+            var email = (HttpContext.Items["User"] as ClaimsPrincipal).FindFirst("Email")?.Value;
             return await _tasksService.GetTodoTasks();
         }
 
