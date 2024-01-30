@@ -27,7 +27,7 @@ namespace Todo.Api.Application.Controllers
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<TodoTaskDTO>>> GetTodoTasksByUser()
         {
-            var email = (HttpContext.Items["User"] as ClaimsPrincipal).FindFirst("Email")?.Value;
+            var email = (HttpContext.Items["User"] as ClaimsPrincipal).FindFirst("Id")?.Value;
             return await _tasksService.GetTodoTasks();
         }
 
@@ -44,9 +44,10 @@ namespace Todo.Api.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoTask>> todoTask(TodoTaskDTO todoTask)
+        public async Task<ActionResult<TodoTask>> todoTask(CreateTodoTaskDTO todoTask)
         {
-            await _tasksService.CreateTodoTask(todoTask);
+            var user = (HttpContext.Items["User"] as UserDTO);
+            await _tasksService.CreateTodoTask(todoTask, user);
             return Created();
         }
 

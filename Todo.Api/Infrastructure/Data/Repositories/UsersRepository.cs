@@ -19,15 +19,19 @@ namespace Todo.Api.Infrastructure.Data.Repositories
             _context = context;
         }
 
-        private UserDTO MapProductToDTO(User user)
+        private UserDTO MapEntityToDTO(User user)
         {
             return new UserDTO
             {
-
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfilePicPath = user.ProfilePicPath
             };
         }
 
-        private User MapDTOToProduct(UserDTO user)
+        private User MapDTOToEntity(UserDTO user)
         {
             return new User
             {
@@ -39,21 +43,27 @@ namespace Todo.Api.Infrastructure.Data.Repositories
         public List<UserDTO> GetUsers()
         {
             var users = _context.Users.ToList();
-            return users.Select(MapProductToDTO).ToList();
+            return users.Select(MapEntityToDTO).ToList();
         }
 
         public UserDTO? GetUserById(int userId)
         {
             var user = _context.Users.Find(userId);
-            return user != null ? MapProductToDTO(user) : null;
+            return user != null ? MapEntityToDTO(user) : null;
+        }
+
+        public async Task<UserDTO?> GetUserByEmail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return user != null ? MapEntityToDTO(user) : null;
         }
 
         public UserDTO CreateUser(UserDTO newuser)
         {
-            var user = MapDTOToProduct(newuser);
+            var user = MapDTOToEntity(newuser);
             _context.Users.Add(user);
             _context.SaveChanges();
-            return MapProductToDTO(user);
+            return MapEntityToDTO(user);
         }
 
 

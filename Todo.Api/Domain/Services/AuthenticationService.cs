@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http;
+using Todo.Api.Domain.Interfaces.IRepositories;
 using Todo.Api.Domain.Models;
 
 namespace Todo.Api.Domain.Services
@@ -8,10 +9,12 @@ namespace Todo.Api.Domain.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
-        public AuthenticationService(HttpClient httpClient, IConfiguration configuration)
+        private readonly IUsersRepository _usersRepository;
+        public AuthenticationService(HttpClient httpClient, IConfiguration configuration, IUsersRepository usersRepository)
         {
             _httpClient = httpClient;
             _configuration = configuration;
+            _usersRepository = usersRepository;
         }
 
         public async Task<AuthenticationResModel> Authenticate(string code)
@@ -42,6 +45,8 @@ namespace Todo.Api.Domain.Services
            
             if (authenticationResModel != null && authenticationResModel.Success == true)
             {
+                var user = _usersRepository.GetUserByEmail(authenticationResModel.CurrentUser.Email);
+                authenticationResModel.CurrentUser.UserId = user.Id;
                 return authenticationResModel;
 
             }

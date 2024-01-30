@@ -19,7 +19,7 @@ namespace Todo.Api.Infrastructure.Data.Repositories
             _context = context;
         }
 
-        private TodoTaskDTO MapProductToDTO(TodoTask todotask)
+        private TodoTaskDTO MapEntityToDTO(TodoTask todotask)
         {
             return new TodoTaskDTO
             {
@@ -27,11 +27,16 @@ namespace Todo.Api.Infrastructure.Data.Repositories
             };
         }
 
-        private TodoTask MapDTOToProduct(TodoTaskDTO todotask)
+        private TodoTask MapDTOToEntity(TodoTaskDTO todotask)
         {
             return new TodoTask
             {
-
+                Title = todotask.Title,
+                Description = todotask.Description,
+                Status = todotask.Status,
+                UpdatedAt = todotask.UpdatedAt,
+                CreatedAt = todotask.CreatedAt,
+                UserId = todotask.UserId
             };
         }
 
@@ -39,21 +44,21 @@ namespace Todo.Api.Infrastructure.Data.Repositories
         public List<TodoTaskDTO> GetTodoTasks()
         {
             var todotasks = _context.Tasks.ToList();
-            return todotasks.Select(MapProductToDTO).ToList();
+            return todotasks.Select(MapEntityToDTO).ToList();
         }
 
         public TodoTaskDTO? GetTodoTaskById(int todoTaskId)
         {
             var todotask = _context.Tasks.Find(todoTaskId);
-            return todotask != null ? MapProductToDTO(todotask) : null;
+            return todotask != null ? MapEntityToDTO(todotask) : null;
         }
 
         public TodoTaskDTO CreateTodoTask(TodoTaskDTO newtodotask)
         {
-            var todotask = MapDTOToProduct(newtodotask);
+            var todotask = MapDTOToEntity(newtodotask);
             _context.Tasks.Add(todotask);
             _context.SaveChanges();
-            return MapProductToDTO(todotask);
+            return MapEntityToDTO(todotask);
         }
 
 

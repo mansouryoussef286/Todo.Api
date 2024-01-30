@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Security.Claims;
 using Todo.Api.Domain.DTOs;
+using Todo.Api.Domain.Enums;
 using Todo.Api.Domain.Interfaces.IRepositories;
 
 namespace Todo.Api.Domain.Services
@@ -13,21 +15,29 @@ namespace Todo.Api.Domain.Services
             _TasksRepository = taskRepository;
         }
 
-        public async Task<List<TodoTaskDTO>>  GetTodoTasks()
+        public async Task<List<TodoTaskDTO>> GetTodoTasks()
         {
             return _TasksRepository.GetTodoTasks();
         }
 
-        public async Task<TodoTaskDTO?>  GetTodoTaskById(int todoTaskId)
+        public async Task<TodoTaskDTO?> GetTodoTaskById(int todoTaskId)
         {
             return _TasksRepository.GetTodoTaskById(todoTaskId);
         }
 
-        public async Task  CreateTodoTask(TodoTaskDTO todoTask)
+        public async Task CreateTodoTask(CreateTodoTaskDTO todoTask, UserDTO user)
         {
-            todoTask.CreatedAt = DateTime.Now;
-            todoTask.UpdatedAt = DateTime.Now;
-            _TasksRepository.CreateTodoTask(todoTask);
+            var newtoDoTask = new TodoTaskDTO()
+            {
+                Title = todoTask.Title,
+                Description = todoTask.Description,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                Status = (int)TodoStatus.NotCompleted,
+                UserId = user.Id,
+            };
+
+            _TasksRepository.CreateTodoTask(newtoDoTask);
         }
 
         public async Task<bool> UpdateTodoTask(TodoTaskDTO todoTask)
