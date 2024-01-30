@@ -13,7 +13,7 @@ namespace Todo.Api.Domain.Interfaces.IRepositories
         TodoTaskDTO? GetTodoTaskById(int todoTaskId);
 
         Task<bool> UpdateTodoTask(TodoTaskDTO todoTask);
-        TodoTaskDTO CreateTodoTask(TodoTaskDTO todoTask);
+        Task<TodoTaskDTO> CreateTodoTask(TodoTaskDTO todoTask);
 
         void DeleteTodoTask(int todoTaskId);
     }

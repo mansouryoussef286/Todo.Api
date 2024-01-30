@@ -44,11 +44,9 @@ namespace Todo.Api.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoTask>> todoTask(CreateTodoTaskDTO todoTask)
+        public async Task<TodoTaskDTO> todoTask(CreateTodoTaskDTO todoTask)
         {
-            var user = (HttpContext.Items["User"] as UserDTO);
-            await _tasksService.CreateTodoTask(todoTask, user);
-            return Created();
+            return await _tasksService.CreateTodoTask(todoTask);
         }
 
         [HttpDelete("{id}")]

@@ -23,7 +23,13 @@ namespace Todo.Api.Infrastructure.Data.Repositories
         {
             return new TodoTaskDTO
             {
-
+                Id = todotask.Id,
+                Title = todotask.Title,
+                Description = todotask.Description,
+                Status = todotask.Status,
+                UpdatedAt = todotask.UpdatedAt,
+                CreatedAt = todotask.CreatedAt,
+                UserId = todotask.UserId
             };
         }
 
@@ -53,11 +59,11 @@ namespace Todo.Api.Infrastructure.Data.Repositories
             return todotask != null ? MapEntityToDTO(todotask) : null;
         }
 
-        public TodoTaskDTO CreateTodoTask(TodoTaskDTO newtodotask)
+        public async Task<TodoTaskDTO> CreateTodoTask(TodoTaskDTO newtodotask)
         {
             var todotask = MapDTOToEntity(newtodotask);
-            _context.Tasks.Add(todotask);
-            _context.SaveChanges();
+            await _context.Tasks.AddAsync(todotask);
+            await _context.SaveChangesAsync();
             return MapEntityToDTO(todotask);
         }
 

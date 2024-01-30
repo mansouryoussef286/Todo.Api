@@ -25,7 +25,7 @@ namespace Todo.Api.Domain.Services
             return _TasksRepository.GetTodoTaskById(todoTaskId);
         }
 
-        public async Task CreateTodoTask(CreateTodoTaskDTO todoTask, UserDTO user)
+        public async Task<TodoTaskDTO> CreateTodoTask(CreateTodoTaskDTO todoTask)
         {
             var newtoDoTask = new TodoTaskDTO()
             {
@@ -34,10 +34,11 @@ namespace Todo.Api.Domain.Services
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 Status = (int)TodoStatus.NotCompleted,
-                UserId = user.Id,
+                UserId = todoTask.UserId,
             };
 
-            _TasksRepository.CreateTodoTask(newtoDoTask);
+            var x= await _TasksRepository.CreateTodoTask(newtoDoTask);
+            return x;
         }
 
         public async Task<bool> UpdateTodoTask(TodoTaskDTO todoTask)

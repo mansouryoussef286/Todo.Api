@@ -42,10 +42,10 @@ namespace Todo.Api.Domain.Services
             // Read and deserialize the response content
             var responseContent = await response.Content.ReadAsStringAsync();
             var authenticationResModel = JsonConvert.DeserializeObject<AuthenticationResModel>(responseContent);
-           
+
             if (authenticationResModel != null && authenticationResModel.Success == true)
             {
-                var user = _usersRepository.GetUserByEmail(authenticationResModel.CurrentUser.Email);
+                var user = await _usersRepository.GetUserByEmail(authenticationResModel.CurrentUser.Email);
                 authenticationResModel.CurrentUser.UserId = user.Id;
                 return authenticationResModel;
 
