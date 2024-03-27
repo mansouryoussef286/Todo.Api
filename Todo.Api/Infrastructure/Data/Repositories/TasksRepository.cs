@@ -47,9 +47,13 @@ namespace Todo.Api.Infrastructure.Data.Repositories
         }
 
 
-        public List<TodoTaskDTO> GetTodoTasks()
+        public async Task<List<TodoTaskDTO>> GetTodoTasks(int? userId = null)
         {
-            var todotasks = _context.Tasks.ToList();
+            List<TodoTask> todotasks;
+            if (userId != 0 && userId != null)
+                todotasks = await _context.Tasks.Where(t=>t.UserId == userId).ToListAsync();
+            else
+                todotasks = await _context.Tasks.ToListAsync();
             return todotasks.Select(MapEntityToDTO).ToList();
         }
 

@@ -8,7 +8,7 @@ namespace Todo.Api.Domain.Interfaces.IRepositories
 {
     public interface ITasksRepository
     {
-        List<TodoTaskDTO> GetTodoTasks();
+        Task<List<TodoTaskDTO>> GetTodoTasks(int? userId = null);
 
         TodoTaskDTO? GetTodoTaskById(int todoTaskId);
 

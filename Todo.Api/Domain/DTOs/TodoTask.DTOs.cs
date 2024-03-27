@@ -37,9 +37,6 @@ namespace Todo.Api.Domain.DTOs
 
     public class CreateTodoTaskDTO
     {
-        [Required(ErrorMessage = "Task ID is required")]
-        public int UserId { get; set; }
-
         [Required(ErrorMessage = "Title is required")]
         [StringLength(50, ErrorMessage = "Title cannot be longer than 100 characters")]
         public string Title { get; set; }
