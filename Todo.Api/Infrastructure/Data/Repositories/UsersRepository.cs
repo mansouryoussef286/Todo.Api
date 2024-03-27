@@ -35,7 +35,11 @@ namespace Todo.Api.Infrastructure.Data.Repositories
         {
             return new User
             {
-
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                ProfilePicPath = user.ProfilePicPath
             };
         }
 
@@ -46,9 +50,9 @@ namespace Todo.Api.Infrastructure.Data.Repositories
             return users.Select(MapEntityToDTO).ToList();
         }
 
-        public UserDTO? GetUserById(int userId)
+        public async Task<UserDTO?> GetUserById(int userId)
         {
-            var user = _context.Users.Find(userId);
+            var user = await _context.Users.FindAsync(userId);
             return user != null ? MapEntityToDTO(user) : null;
         }
 

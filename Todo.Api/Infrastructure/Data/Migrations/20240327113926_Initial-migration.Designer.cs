@@ -12,8 +12,8 @@ using Todo.Api.Infrastructure.Data.DbContexts;
 namespace Todo.Api.Migrations
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20240130212632_update-status")]
-    partial class updatestatus
+    [Migration("20240327113926_Initial-migration")]
+    partial class Initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,10 +62,7 @@ namespace Todo.Api.Migrations
             modelBuilder.Entity("Todo.Api.Infrastructure.Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()

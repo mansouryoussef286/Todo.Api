@@ -59,10 +59,7 @@ namespace Todo.Api.Migrations
             modelBuilder.Entity("Todo.Api.Infrastructure.Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()

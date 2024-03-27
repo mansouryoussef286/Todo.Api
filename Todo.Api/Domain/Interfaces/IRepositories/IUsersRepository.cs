@@ -9,7 +9,7 @@ namespace Todo.Api.Domain.Interfaces.IRepositories
     public interface IUsersRepository
     {
         List<UserDTO> GetUsers();
-        UserDTO? GetUserById(int todoTaskId);
+        Task<UserDTO?> GetUserById(int id);
         Task<UserDTO?> GetUserByEmail(string email);
         Task<bool> UpdateUser(UserDTO todoTask);
         UserDTO CreateUser(UserDTO todoTask);

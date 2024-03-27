@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http;
+using Todo.Api.Domain.DTOs;
 using Todo.Api.Domain.Interfaces.IRepositories;
 using Todo.Api.Domain.Models;
 
@@ -45,8 +46,7 @@ namespace Todo.Api.Domain.Services
 
             if (authenticationResModel != null && authenticationResModel.Success == true)
             {
-                var user = await _usersRepository.GetUserByEmail(authenticationResModel.CurrentUser.Email);
-                authenticationResModel.CurrentUser.UserId = user.Id;
+                await CheckUserInDbById(authenticationResModel.CurrentUser);
                 return authenticationResModel;
 
             }
@@ -55,6 +55,26 @@ namespace Todo.Api.Domain.Services
                 authenticationResModel = new AuthenticationResModel();
                 authenticationResModel.Success = false;
                 return authenticationResModel;
+            }
+        }
+
+        private async Task CheckUserInDbById(Currentuser currentuser)
+        {
+            var user = await _usersRepository.GetUserById(currentuser.Id);
+            if(user == null)
+            {
+                // create user in db as register 
+                UserDTO userDto = new UserDTO()
+                {
+                    Id = currentuser.Id,
+                    Email = currentuser.Email,
+                    FirstName = currentuser.FirstName,
+                    LastName = currentuser.LastName,
+                    ProfilePicPath = currentuser.ProfilePicturePath
+                };
+
+                _usersRepository.CreateUser(userDto);
+                return;
             }
         }
     }

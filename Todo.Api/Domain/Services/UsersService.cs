@@ -19,7 +19,7 @@ namespace Todo.Api.Domain.Services
 
         public async Task<UserDTO?> GetUserById(int UserId)
         {
-            return _UsersRepository.GetUserById(UserId);
+            return await _UsersRepository.GetUserById(UserId);
         }
 
         public async Task CreateUser(UserDTO User)
