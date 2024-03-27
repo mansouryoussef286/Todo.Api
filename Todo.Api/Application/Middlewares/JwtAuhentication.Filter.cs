@@ -51,15 +51,21 @@ public class JWTAuthenticationFilter : ActionFilterAttribute
             SecurityToken validatedToken;
             var TokenPrincipals = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
             var jwtClaims = TokenPrincipals.Claims;
+
             var emailClaim = jwtClaims.FirstOrDefault(c => c.Type == "Email");
             string Email = emailClaim?.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries)[1];
+            //if (Email == null)
+            //    return false;
 
-            if (Email == null)
+            var userIdClaim = jwtClaims.FirstOrDefault(c => c.Type == "Id");
+            var userIdString = userIdClaim?.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries)[1];
+            if (!Int32.TryParse(userIdString, out int userId))
                 return false;
 
             var claims = new[]
             {
                 new Claim("Email", Email),
+                new Claim("Id", userId.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, "user");
