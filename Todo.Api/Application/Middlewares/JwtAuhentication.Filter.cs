@@ -54,8 +54,6 @@ public class JWTAuthenticationFilter : ActionFilterAttribute
 
             var emailClaim = jwtClaims.FirstOrDefault(c => c.Type == "Email");
             string Email = emailClaim?.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries)[1];
-            //if (Email == null)
-            //    return false;
 
             var userIdClaim = jwtClaims.FirstOrDefault(c => c.Type == "Id");
             var userIdString = userIdClaim?.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries)[1];
