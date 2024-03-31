@@ -16,16 +16,15 @@ namespace Todo.Api.Application.Controllers
 
 
         [HttpGet("{code}")]
-        public async Task<AuthenticationResModel> ValidateCodeAndGetAccessToken(string code)
+        public async Task<AuthServerAuthenticationResModel> ValidateCodeAndGetAccessToken(string code)
         {
             return await _authenticationService.Authenticate(code);
         }
 
-        //[HttpPost("refresh")]
-        //public async Task<AuthenticationResModel> RefreshAccessToken(string code)
-        //{
-        //    //jkgkhkil,jk/  
-        //    return await _authenticationService.Authenticate(code);
-        //}
+        [HttpPost("refresh")]
+        public async Task<AuthServerRefreshTokenResModel> RefreshAccessToken(RefreshTokenReqModel refreshTokenReqModel)
+        {
+            return await _authenticationService.RefreshToken(refreshTokenReqModel);
+        }
     }
 }

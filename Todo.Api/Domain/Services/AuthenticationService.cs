@@ -18,14 +18,14 @@ namespace Todo.Api.Domain.Services
             _usersRepository = usersRepository;
         }
 
-        public async Task<AuthenticationResModel> Authenticate(string code)
+        public async Task<AuthServerAuthenticationResModel> Authenticate(string code)
         {
             // Replace the URL with the actual API endpoint
             var apiUrl = (_configuration["Auth-Server:ApiUrl"] ?? "") + "authenticate";
             var authServerApiId = _configuration["Auth-Server:ApiId"] ?? "";
             var authServerApiSecret = _configuration["Auth-Server:ApiSecret"] ?? "";
 
-            var reqModel = new AuthenticationReqModel()
+            var reqModel = new AuthServerAuthenticationReqModel()
             {
                 Code = code,
                 ApiId = authServerApiId,
@@ -42,7 +42,7 @@ namespace Todo.Api.Domain.Services
 
             // Read and deserialize the response content
             var responseContent = await response.Content.ReadAsStringAsync();
-            var authenticationResModel = JsonConvert.DeserializeObject<AuthenticationResModel>(responseContent);
+            var authenticationResModel = JsonConvert.DeserializeObject<AuthServerAuthenticationResModel>(responseContent);
 
             if (authenticationResModel != null && authenticationResModel.Success == true)
             {
@@ -52,7 +52,7 @@ namespace Todo.Api.Domain.Services
             }
             else
             {
-                authenticationResModel = new AuthenticationResModel();
+                authenticationResModel = new AuthServerAuthenticationResModel();
                 authenticationResModel.Success = false;
                 return authenticationResModel;
             }
@@ -77,5 +77,37 @@ namespace Todo.Api.Domain.Services
                 return;
             }
         }
+
+        public async Task<AuthServerRefreshTokenResModel> RefreshToken(RefreshTokenReqModel refreshTokenReqModel)
+        {
+            // Replace the URL with the actual API endpoint
+            var apiUrl = (_configuration["Auth-Server:ApiUrl"] ?? "") + "authenticate/refresh-token";
+            var authServerApiId = _configuration["Auth-Server:ApiId"] ?? "";
+            var authServerApiSecret = _configuration["Auth-Server:ApiSecret"] ?? "";
+
+            var reqModel = new RefreshTokenReqModel()
+            {
+                UserId = refreshTokenReqModel.UserId,
+                AccessToken = refreshTokenReqModel.AccessToken,
+                RefreshToken = refreshTokenReqModel.RefreshToken,
+                ApiId = authServerApiId,
+                ApiSecret = authServerApiSecret,
+            };
+
+
+            var jsonContent = JsonConvert.SerializeObject(reqModel);
+            var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(apiUrl, content);
+
+            response.EnsureSuccessStatusCode();
+
+            // Read and deserialize the response content
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var refreshTokenResModel = JsonConvert.DeserializeObject<AuthServerRefreshTokenResModel>(responseContent);
+
+            return refreshTokenResModel;
+        }
+
     }
 }
