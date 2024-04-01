@@ -85,7 +85,7 @@ namespace Todo.Api.Domain.Services
             var authServerApiId = _configuration["Auth-Server:ApiId"] ?? "";
             var authServerApiSecret = _configuration["Auth-Server:ApiSecret"] ?? "";
 
-            var reqModel = new RefreshTokenReqModel()
+            var reqModel = new AuthServerRefreshTokenReqModel()
             {
                 UserId = refreshTokenReqModel.UserId,
                 AccessToken = refreshTokenReqModel.AccessToken,

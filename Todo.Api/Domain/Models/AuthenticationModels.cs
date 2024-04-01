@@ -29,6 +29,13 @@
         public int UserId { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+    }
+
+    public class AuthServerRefreshTokenReqModel
+    {
+        public int UserId { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
         public string ApiId { get; set; }
         public string ApiSecret { get; set; }
     }
