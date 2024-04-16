@@ -42,7 +42,7 @@ namespace Todo.Api.Domain.Services
                 UserId = userId,
             };
 
-            var newTask= await _TasksRepository.CreateTodoTask(newtoDoTask);
+            var newTask = await _TasksRepository.CreateTodoTask(newtoDoTask);
             return newTask;
         }
 
@@ -61,6 +61,19 @@ namespace Todo.Api.Domain.Services
         public async Task DeleteTodoTask(int todoTaskId)
         {
             _TasksRepository.DeleteTodoTask(todoTaskId);
+        }
+
+        public async Task<bool> ToggleTodoTaskStatus(int id)
+        {
+            TodoTaskDTO oldTask = await GetTodoTaskById(id);
+            oldTask.UpdatedAt = DateTime.Now;
+            oldTask.Status = oldTask.Status == (int)TodoStatus.NotCompleted ? (int)TodoStatus.Completed : (int)TodoStatus.NotCompleted;
+            var isUpdated = await _TasksRepository.UpdateTodoTask(oldTask);
+            if (isUpdated)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

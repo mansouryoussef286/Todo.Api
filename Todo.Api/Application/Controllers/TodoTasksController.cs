@@ -56,5 +56,11 @@ namespace Todo.Api.Application.Controllers
             await _tasksService.DeleteTodoTask(id);
             return NoContent();
         }
+
+        [HttpPut("{id}/toggle-status")]
+        public async Task<bool> ToggleTodoTaskStatus(int id)
+        {
+            return await _tasksService.ToggleTodoTaskStatus(id);
+        }
     }
 }

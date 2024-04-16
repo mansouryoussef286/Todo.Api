@@ -74,15 +74,14 @@ namespace Todo.Api.Infrastructure.Data.Repositories
 
         public async Task<bool> UpdateTodoTask(TodoTaskDTO todoTask)
         {
-            var existingProduct = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == todoTask.Id);
+            TodoTask existingProduct = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == todoTask.Id);
 
             if (existingProduct != null)
             {
-                //existingProduct.Name = todotask.Name;
-                //existingProduct.Description = todotask.Description;
-                //existingProduct.Price = todotask.Price;
-                //existingProduct.Quantity = todotask.Quantity;
-                //existingProduct.UpdatedAt = todotask.UpdatedAt;
+                existingProduct.Title = todoTask.Title;
+                existingProduct.Description = todoTask.Description;
+                existingProduct.Status = todoTask.Status;
+                existingProduct.UpdatedAt = todoTask.UpdatedAt;
 
                 await _context.SaveChangesAsync();
                 return true;
